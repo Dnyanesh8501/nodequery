@@ -2,12 +2,21 @@ import fs from "fs";
 import path from "path";
 import ExcelJS from "exceljs";
 
-// Load SAP credentials from .env (Node 21.7+)
-try {
-    process.loadEnvFile();
-} catch {
-    console.warn(".env file not found, using existing environment variables");
-}
+// Load SAP credentials from the .env next to this script (works on Node 18, no dotenv needed)
+const loadEnv = () => {
+    const envPath = new URL(".env", import.meta.url);
+    if (!fs.existsSync(envPath)) {
+        console.warn(".env file not found, using existing environment variables");
+        return;
+    }
+    for (const line of fs.readFileSync(envPath, "utf8").split(/\r?\n/)) {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)\s*$/);
+        if (!match || line.trim().startsWith("#")) continue;
+        const value = match[2].replace(/^(['"])(.*)\1$/, "$2");
+        if (process.env[match[1]] === undefined) process.env[match[1]] = value;
+    }
+};
+loadEnv();
 
 const BASE_URL = process.env.SAP_BASE_URL;
 const API_USER = process.env.SAP_USERNAME;
@@ -19,6 +28,9 @@ const OUTPUT_DIR = "/home/snopadm";
 const EXCHANGE_RATES = { USD: 70, EUR: 80, GBP: 90 };
 
 const getSAPData = async (endpoint) => {
+    if (!BASE_URL || !API_USER || !API_PASS) {
+        throw new Error("SAP_BASE_URL / SAP_USERNAME / SAP_PASSWORD missing in .env");
+    }
     const encoded = Buffer.from(`${API_USER}:${API_PASS}`).toString("base64");
     const url = `${BASE_URL.replace(/\/+$/, "")}/${endpoint.replace(/^\/+/, "")}`;
     const res = await fetch(url, {
