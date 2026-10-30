@@ -1,0 +1,9 @@
+{
+  "name": "bfl-query",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}
