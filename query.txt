@@ -1,2 +1,12 @@
-WITH excel_data (die_no, line_code, priority) AS (VALUES ('03200', 'FAB-A', 2), ('03200', 'FAB-B', 3), ('03200', 'FAB-C', 4), ('03254', 'FAB-A', 2), ('03254', 'FAB-B', 3), ('03254', 'FAB-C', 4), ('03398', 'FAB-A', 1), ('03398', 'FAB-B', 2), ('03398', 'FAB-C', 3), ('03399', 'FAB-A', 1), ('03399', 'FAB-B', 2), ('03399', 'FAB-C', 3), ('03400', 'FAB-A', 1), ('03400', 'FAB-B', 2), ('03400', 'FAB-C', 3), ('03401', 'FAB-A', 1), ('03401', 'FAB-B', 2), ('03401', 'FAB-C', 3), ('03403', 'FAB-A', 1), ('03403', 'FAB-B', 2), ('03403', 'FAB-C', 3), ('03404', 'FAB-A', 1), ('03404', 'FAB-B', 2), ('03404', 'FAB-C', 3), ('03405', 'FAB-A', 1), ('03405', 'FAB-B', 2), ('03405', 'FAB-C', 3), ('03718', 'LINEIN02', 1), ('03718', 'LINEIN03', 2), ('03970', 'LINEMD2A', 1), ('03970', 'LINEMD2B', 2), ('03972', 'FAB-A', 1), ('03972', 'FAB-B', 2), ('03972', 'FAB-C', 3), ('04574', 'LINEMD1', 2), ('04582', 'LINEMD1', 2), ('08054', 'LINEKN4', 1), ('08055', 'LINEKN4', 1))
+WITH excel_data (die_no, line_code, priority) AS (VALUES ('03200', 'FAB-A', 2),
+ ('03200', 'FAB-B', 3), ('03200', 'FAB-C', 4), ('03254', 'FAB-A', 2), ('03254','FAB-B', 3), 
+ ('03254', 'FAB-C', 4), ('03398', 'FAB-A', 1), ('03398', 'FAB-B', 2), ('03398', 'FAB-C', 3),
+('03399', 'FAB-A', 1), ('03399', 'FAB-B', 2), ('03399', 'FAB-C', 3), ('03400', 'FAB-A', 1),
+('03400', 'FAB-B', 2), ('03400', 'FAB-C', 3), ('03401', 'FAB-A', 1), ('03401', 'FAB-B', 2),
+('03401', 'FAB-C', 3), ('03403', 'FAB-A', 1), ('03403', 'FAB-B', 2), ('03403', 'FAB-C', 3),
+('03404', 'FAB-A', 1), ('03404', 'FAB-B', 2), ('03404', 'FAB-C', 3), ('03405', 'FAB-A', 1),
+('03405', 'FAB-B', 2), ('03405', 'FAB-C', 3), ('03718', 'LINEIN02', 1), ('03718', 'LINEIN03', 2), 
+('03970', 'LINEMD2A', 1), ('03970', 'LINEMD2B', 2), ('03972', 'FAB-A', 1), ('03972', 'FAB-B', 2), 
+('03972', 'FAB-C', 3), ('04574', 'LINEMD1', 2), ('04582', 'LINEMD1', 2), ('08054', 'LINEKN4', 1),
+ ('08055', 'LINEKN4', 1))
 UPDATE map_die_line mdl SET priority = ed.priority FROM excel_data ed JOIN mst_die d ON d.die_no = ed.die_no JOIN mst_line l ON l.line_code = ed.line_code WHERE mdl.die_id = d.die_id AND mdl.line_id = l.line_id;

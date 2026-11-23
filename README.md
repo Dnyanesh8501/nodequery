@@ -6,3 +6,13 @@ secret= THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SEC
 SAP_BASE_URL=http://snopapp.kalyanicorp.com/api/
 SAP_USERNAME=snopadm
 SAP_PASSWORD=snopa@dm!n
+
+
+
+SELECT d.die_no,l.line_code,l.line_name,m.type,m.priority FROM (
+SELECT mdl.*, COUNT(*) OVER (PARTITION BY mdl.die_id, mdl.type, mdl.priority) AS same_priority_lines
+FROM map_die_line mdl WHERE mdl.status = true) m
+JOIN mst_die  d ON d.die_id  = m.die_id
+JOIN mst_line l ON l.line_id = m.line_id
+WHERE m.same_priority_lines > 1
+ORDER BY d.die_no, m.type, m.priority, l.line_code;
