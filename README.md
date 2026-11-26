@@ -16,3 +16,8 @@ JOIN mst_die  d ON d.die_id  = m.die_id
 JOIN mst_line l ON l.line_id = m.line_id
 WHERE m.same_priority_lines > 1
 ORDER BY d.die_no, m.type, m.priority, l.line_code;
+
+ls -lh /tmp/die_line_report_26-11-2026.csv
+wc -l /tmp/die_line_report_26-11-2026.csv
+
+scp root@vm1puat021:/tmp/die_line_report_26-11-2026.csv C:\Users\<YourUsername>\Downloads\
